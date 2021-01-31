@@ -1,0 +1,20 @@
+#!/bin/bash/
+#$ -j y
+#$ -S /bin/bash 
+#$ -V
+#$ -l hostname=beast
+#$ -pe multi 16
+#$ -m e
+#$ -M ly36@st-andrews.ac.uk
+
+conda activate phastENV
+
+#Process MAF files using phast msa_view program. The goal of this script is to extract four-fold degenerate sites from the alignment, format the output for phyloFit and then use aggregate all of the 4d-sites into a single file so that substituition rate estimates can be calculated based on four-fold sites.
+cat chrom_names.txt | while read line;do
+msa_view CHROM_MAFS_PHAST/$line.forphast.maf --in-format MAF --4d --out-format SS --4d --features GFFS_coding/$line.gff > 4d-codons.$line.ss
+msa_view 4d-codons.$line.ss --in-format SS --out-format SS --tuple-size 1 > 4d-sites.$line.ss
+msa_view --aggregate Girardinichthys_multiradiatus,Goodea_atripinnis,Fundulus_heteroclitus,Cyprinodon_nevadensis,Cyprinodon_variegatus,Xenotaenia_resolanae,Xenoophorus_captivus,Crenichthys_baileyi,Gambusia_holbrooki,Gambusia_affinis,Xiphophorus_couchianus,Xiphophorus_maculatus,Xiphophorus_hellerii,Poeciliopsis_turrubarensis,Poeciliopsis_retropinna,Poecilia_formosa,Poecilia_mexicana,Poecilia_latipinna,Poecilia_reticulata,Orestias_ascotanensis,Poeciliopsis_occidentalis 4d-sites.$line.ss > all-4d.sites.ss
+done
+
+#Estimate substitution rates based on 4d-sites
+phyloFit --tree "((((((Gambusia_holbrooki,Gambusia_affinis),((Xiphophorus_couchianus,Xiphophorus_maculatus),Xiphophorus_hellerii)),((Poeciliopsis_occidentalis,Poeciliopsis_turrubarensis),Poeciliopsis_retropinna)),(((Poecilia_formosa,Poecilia_mexicana),Poecilia_latipinna),Poecilia_reticulata)),Orestias_ascotanensis),(((Cyprinodon_nevadensis,Cyprinodon_variegatus),Fundulus_heteroclitus),(((Girardinichthys_multiradiatus,(Xenoophorus_captivus,Goodea_atripinnis)),Xenotaenia_resolanae),Crenichthys_baileyi)))" --msa-format SS --out-root nonconserved-4d all-4d.sites.ss
