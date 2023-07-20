@@ -1,13 +1,13 @@
 input.file=../ROASTED_CYPRINODON_ATTEMPT_singlecov_copy.maf.gz
 input.file.compression=gzip
 input.format=Maf
-output.log=ROASTED_CYPRINODON_ATTEMPT_singlecov.maffilter_test.log
-SPECIES=($INSERT_SPECIES_LIST_HERE)
+output.log=ROASTED_CYPRINODON_ATTEMPT_singlecov.maffilter.log
+SPECIES=(Gambusia_holbrooki, Gambusia_affinis, Xiphophorus_couchianus, Xiphophorus_maculatus, Xiphophorus_hellerii, Poeciliopsis_occidentalis, Poeciliopsis_turrubarensis, Poeciliopsis_retropinna, Poecilia_formosa, Poecilia_mexicana, Poecilia_latipinna, Poecilia_reticulata, Orestias_ascotanensis, Fundulus_heteroclitus, Girardinichthys_multiradiatus, Xenoophorus_captivus, Goodea_atripinnis, Xenotaenia_resolanae, Crenichthys_baileyi)
 maf.filter=\
         SequenceStatistics(\
                 statistics=(BlockLength,BlockSize),\
                 ref_species=Girardinichthys_multiradiatus,\
-                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics1_test.txt),\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics1.txt),\
         Subset(\
                 species=$(SPECIES),\
                 strict=yes, keep=no,\
@@ -15,14 +15,14 @@ maf.filter=\
         SequenceStatistics(\
                 statistics=(BlockLength,BlockSize),\
                 ref_species=Girardinichthys_multiradiatus,\
-                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics2_test.txt),\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics2.txt),\
         Merge(\
                 species=Girardinichthys_multiradiatus,\
                 dist_max=500),\
         SequenceStatistics(\
                 statistics=(BlockLength,BlockSize),\
                 ref_species=Girardinichthys_multiradiatus,\
-                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics3_test.txt),\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics3.txt),\
         ExtractFeature(\
                 ref_species=Girardinichthys_multiradiatus,\
                 feature.file=../GM.transcript.gtf,\
@@ -32,8 +32,8 @@ maf.filter=\
         SequenceStatistics(\
                 statistics=(BlockLength,BlockSize),\
                 ref_species=Girardinichthys_multiradiatus,\
-                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics4_test.txt),\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics4.txt),\
         OutputAlignments(\
                 format=Fasta,\
-                file=Alignment_test/21Cyprinodontiformes%i-%c-%b-%e.fas,\
+                file=Alignments/21Cyprinodontiformes%i-%c-%b-%e.fas,\
                 reference=Girardinichthys_multiradiatus)
