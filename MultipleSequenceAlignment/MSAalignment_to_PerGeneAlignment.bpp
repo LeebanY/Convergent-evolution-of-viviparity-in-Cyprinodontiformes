@@ -1,0 +1,39 @@
+input.file=../ROASTED_CYPRINODON_ATTEMPT_singlecov_copy.maf.gz
+input.file.compression=gzip
+input.format=Maf
+output.log=ROASTED_CYPRINODON_ATTEMPT_singlecov.maffilter_test.log
+SPECIES=($INSERT_SPECIES_LIST_HERE)
+maf.filter=\
+        SequenceStatistics(\
+                statistics=(BlockLength,BlockSize),\
+                ref_species=Girardinichthys_multiradiatus,\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics1_test.txt),\
+        Subset(\
+                species=$(SPECIES),\
+                strict=yes, keep=no,\
+                remove_duplicates=yes),\
+        SequenceStatistics(\
+                statistics=(BlockLength,BlockSize),\
+                ref_species=Girardinichthys_multiradiatus,\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics2_test.txt),\
+        Merge(\
+                species=Girardinichthys_multiradiatus,\
+                dist_max=500),\
+        SequenceStatistics(\
+                statistics=(BlockLength,BlockSize),\
+                ref_species=Girardinichthys_multiradiatus,\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics3_test.txt),\
+        ExtractFeature(\
+                ref_species=Girardinichthys_multiradiatus,\
+                feature.file=../GM.transcript.gtf,\
+                feature.format=GTF,\
+                complete=yes,\
+                ignore_strand=no),\
+        SequenceStatistics(\
+                statistics=(BlockLength,BlockSize),\
+                ref_species=Girardinichthys_multiradiatus,\
+                file=ROASTED_CYPRINODON_ATTEMPT_singlecov.statistics4_test.txt),\
+        OutputAlignments(\
+                format=Fasta,\
+                file=Alignment_test/21Cyprinodontiformes%i-%c-%b-%e.fas,\
+                reference=Girardinichthys_multiradiatus)
