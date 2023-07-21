@@ -6,45 +6,8 @@ library(gt)
 library(ggrepel)
 library(ggpubr)
 library(stringr)
-#The following dataset was produced by taking the diamond blast results, extracting the accession number
-#Then, accession numbers were converted into gene names via uniprot and duplicates were removed.
-#Then, gene names were put into PANTHER (web) for overepresentation analysis with zebrafish as REF
-convergent_gene_set_Drerio <- read.table("Gene_ontology_PANTHER_overrepresentation_danioref.txt",
-                                  fill = TRUE , header = T)
-convergent_gene_set_Hsap <- read.table("Gene_ontology_PANTHER_human_background_convergent.txt",
-                                         fill = TRUE , header = T)
 
-
-tiff("GO_convergent_geneset_against_Drerio.tiff", units="in", width=7, height=5, res=300)
-ggplot(top_10_convergent_zebra, aes(x=Fold_enrichment, y=reorder(Gene_ontology_biological_process, Fold_enrichment), colour=FDR))+
-  geom_point(size=top_10_convergent_zebra$Fold_enrichment*1.2)+scale_colour_viridis(option='D', discrete = F)+
-  theme_minimal()+xlab('Fold Enrichment')+ylab('Gene ontology (Biological process - zebrafish background)')+
-  theme(axis.text=element_text(size=11), axis.title=element_text(size=11,face="bold"))
-dev.off()
-
-top_10_convergent_human<-top_n(convergent_gene_set_Hsap, 10, Fold_enrichment)
-top_10_convergent_zebra<-top_n(convergent_gene_set_Drerio, 10, Fold_enrichment)
-tiff("GO_convergent_geneset_against_Hsapiens.tiff", units="in", width=7, height=5, res=300)
-ggplot(top_10_convergent_human, aes(x=Fold_enrichment, y=reorder(Gene_ontology_biological_process, Fold_enrichment), colour=FDR))+
-  geom_point(size=top_10_convergent_human$Fold_enrichment*0.5)+scale_colour_viridis(option='D', discrete = F)+
-  theme_minimal()+xlab('Fold Enrichment')+ylab('Gene ontology (Biological process - human background)')+
-  theme(axis.text=element_text(size=11), axis.title=element_text(size=11,face="bold"))
-dev.off()
-
-
-
-
-convergent_gene_set_Drerio$Gene_ontology_biological_process<-gsub("_", " ", convergent_gene_set_Drerio$Gene_ontology_biological_process)
-top_30_convergent_human$Gene_ontology_biological_process<-gsub("_", " ", top_30_convergent_human$Gene_ontology_biological_process)
-top_10_convergent_human$Gene_ontology_biological_process<-gsub("_", " ", top_10_convergent_human$Gene_ontology_biological_process)
-
-
-tiff("gene_annotations_convergent_amino_acid_change_hsap_drer.tiff", units="in", width=11, height=5, res=300)
-ggarrange(hsap, Drer, common.legend = T, font.label = list(size= 10, face='bold'), legend = "bottom" )
-dev.off()
-
-
-
+######------------------ RERCONVERGE INFERENCE -----------------########
 ################ Trees for RERconverge #############
 library(ape)
 test_tree <- read.tree(file='cyprinodon_gene_tree_test.txt')
@@ -673,6 +636,48 @@ intersect(immune_genes$Symbol, convergent_genes_amino_acid_eggnog$Preferred_name
 
 Genes_CNEE[[3]]<-tolower(Genes_CNEE[[3]])
 intersect(mouse_pregnant_genes$Symbol, Genes_CNEE$Annotations)
+
+
+######------------------ GENE ONTOLOGY INFERENCE -----------------########
+
+                                 
+#The following dataset was produced by taking the diamond blast results, extracting the accession number
+#Then, accession numbers were converted into gene names via uniprot and duplicates were removed.
+#Then, gene names were put into PANTHER (web) for overepresentation analysis with zebrafish as REF
+convergent_gene_set_Drerio <- read.table("Gene_ontology_PANTHER_overrepresentation_danioref.txt",
+                                  fill = TRUE , header = T)
+convergent_gene_set_Hsap <- read.table("Gene_ontology_PANTHER_human_background_convergent.txt",
+                                         fill = TRUE , header = T)
+
+
+tiff("GO_convergent_geneset_against_Drerio.tiff", units="in", width=7, height=5, res=300)
+ggplot(top_10_convergent_zebra, aes(x=Fold_enrichment, y=reorder(Gene_ontology_biological_process, Fold_enrichment), colour=FDR))+
+  geom_point(size=top_10_convergent_zebra$Fold_enrichment*1.2)+scale_colour_viridis(option='D', discrete = F)+
+  theme_minimal()+xlab('Fold Enrichment')+ylab('Gene ontology (Biological process - zebrafish background)')+
+  theme(axis.text=element_text(size=11), axis.title=element_text(size=11,face="bold"))
+dev.off()
+
+top_10_convergent_human<-top_n(convergent_gene_set_Hsap, 10, Fold_enrichment)
+top_10_convergent_zebra<-top_n(convergent_gene_set_Drerio, 10, Fold_enrichment)
+tiff("GO_convergent_geneset_against_Hsapiens.tiff", units="in", width=7, height=5, res=300)
+ggplot(top_10_convergent_human, aes(x=Fold_enrichment, y=reorder(Gene_ontology_biological_process, Fold_enrichment), colour=FDR))+
+  geom_point(size=top_10_convergent_human$Fold_enrichment*0.5)+scale_colour_viridis(option='D', discrete = F)+
+  theme_minimal()+xlab('Fold Enrichment')+ylab('Gene ontology (Biological process - human background)')+
+  theme(axis.text=element_text(size=11), axis.title=element_text(size=11,face="bold"))
+dev.off()
+
+
+
+
+convergent_gene_set_Drerio$Gene_ontology_biological_process<-gsub("_", " ", convergent_gene_set_Drerio$Gene_ontology_biological_process)
+top_30_convergent_human$Gene_ontology_biological_process<-gsub("_", " ", top_30_convergent_human$Gene_ontology_biological_process)
+top_10_convergent_human$Gene_ontology_biological_process<-gsub("_", " ", top_10_convergent_human$Gene_ontology_biological_process)
+
+
+tiff("gene_annotations_convergent_amino_acid_change_hsap_drer.tiff", units="in", width=11, height=5, res=300)
+ggarrange(hsap, Drer, common.legend = T, font.label = list(size= 10, face='bold'), legend = "bottom" )
+dev.off()
+
 
 
 
