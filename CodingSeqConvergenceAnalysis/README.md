@@ -14,4 +14,7 @@ RERconverge is a method that looks at rate of protein evolution across genes by 
 **CITATION: https://github.com/nclark-lab/RERconverge and https://academic.oup.com/bioinformatics/article/35/22/4815/5514536**
 1. /RERConvergeAnalysis.R : details how exactly the RER analysis was done -- follow the vignette at https://github.com/nclark-lab/RERconverge for specific details on how to run RERconverge for your dataset.
       - Rerconverge first requires trees to produced with the same tree topology but where branch lengths are estimated based on each amino acid multiple-seq alignment. This is done using phangorn with LG as an AA subsituition model.
-      - Trait of interest (viviparity) is labelled in the tree 
+      - Trait of interest (viviparity) is labelled in the tree by specifying (1) at the foreground branches of interest.
+
+RERconverge outputs a correlation between the relative evolutionary rate and the trait of interest.
+      - 
